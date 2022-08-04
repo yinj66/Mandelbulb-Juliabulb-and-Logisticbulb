@@ -1,0 +1,41 @@
+% This code is adapted from: 
+% https://www.youtube.com/watch?v=ksdv5Ad0Ppo
+
+clear
+clc
+
+step = 0.1;
+Re_plot = -3:step:5;
+Im_plot = -3:step:5;
+
+hold on
+
+for Re = Re_plot
+    for Im = Im_plot
+        r_in = Re + Im*1i;
+        if(logisticmap_check(r_in, 512))
+            plot(Re, Im, 'r.');
+        end
+    end
+end
+
+xlim([-3,5])
+axis equal
+
+function [inSet] = logisticmap_check(r, maxIter)
+z = 0.5;
+counter = 0;
+
+while abs(z) < 1 && counter < maxIter
+    z = r*z*(1-z);
+    counter = counter + 1;
+
+end
+
+if counter == maxIter
+    inSet = true;
+else
+    inSet = false;
+end
+
+end
