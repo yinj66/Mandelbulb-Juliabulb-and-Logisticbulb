@@ -1,0 +1,38 @@
+// This code is adapted from
+// http://www.fractalforums.com/3d-fractal-generation/
+// true-3d-mandlebrot-type-fractal/msg4109/#msg4109
+
+int iteration = chi("../CONTROLLER/iteration");
+float n = chf("../CONTROLLER/n");
+
+vector c = @P;
+
+// Change the value of vector v to generate different Logisticbulbs. 
+vector v = set(0,1,0);
+for(int i=0; i<iteration; i++){
+    float r = sqrt(pow(v.x,2)+pow(v.y,2)+pow(v.z,2));
+    float rc = sqrt(pow(c.x,2)+pow(c.y,2)+pow(c.z,2));
+
+    float phi = atan2(v.y, v.x);
+    float phic = atan2(c.y, c.x);
+    
+    float theta = atan2(sqrt(pow(v.x,2) + pow(v.y,2)), v.z);
+    float thetac = atan2(sqrt(pow(c.x,2) + pow(c.y,2)), c.z);
+
+    float vr = pow(r, n);
+    
+    float vxcx = sin(n * theta + thetac) * cos(n * phi + phic);
+    float vycy = sin(n * theta + thetac) * sin(n * phi + phic);
+    float vzcz = cos(n * theta + thetac);
+    
+    float vxcx1 = sin(theta + thetac) * cos(phi + phic);
+    float vycy1 = sin(theta + thetac) * sin(phi + phic);
+    float vzcz1 = cos(theta + thetac);
+
+    v = set(vxcx1, vycy1, vzcz1) * r * rc - 
+    set(vxcx, vycy, vzcz) * vr * rc;
+
+    if(length(v) > 1){
+        @density = 0;
+    }
+}
