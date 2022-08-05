@@ -1,0 +1,35 @@
+# This code is used to generate the orbit of a certain seed.
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr 20 23:23:37 2022
+
+@author: yin
+"""
+
+import math
+
+def length(x):
+    return math.sqrt(x[0]**2+x[1]**2+x[2]**2)
+
+# Change the seed c to generate a different orbit.
+c = [1,0,0.2];
+
+v = c;
+
+# n is power of z. It can be changed to other natural numbers.
+n = 8;
+
+for i in range(100):
+    r = length(v);
+    phi = math.atan(v[1] / v[0]);
+    theta = math.atan(math.sqrt(v[0] * v[0] + v[1] * v[1]) / v[2]);
+    
+
+    vx = math.sin(n * theta) * math.cos(n * phi);
+    vy = math.sin(n * theta) * math.sin(n * phi);
+    vz = math.cos(n * theta);
+    
+    v = [vx * r ** n + c[0], vy * r ** n + c[1], vz * r ** n + c[2]];
+    print(v)
