@@ -1,0 +1,30 @@
+// This code is adapted from
+// http://www.fractalforums.com/3d-fractal-generation/
+// true-3d-mandlebrot-type-fractal/msg4109/#msg4109
+
+int iteration = chi("../CONTROLLER/iteration");
+float n = chf("../CONTROLLER/n");
+
+vector v = @P;
+// Change the value of vector c to generate a different Juliabulb
+vector c = set(0.2,0.2,-1);
+
+for(int i=0; i<iteration; i++){
+    float r = length(v);
+    float phi = atan2(v.y, v.x);
+    float theta = atan2(sqrt(v.x * v.x + v.y * v.y), v.z);
+    
+    float vr = pow(r, n);
+    float vx = sin(n * theta) * cos(n * phi);
+    float vy = sin(n * theta) * sin(n * phi);
+    float vz = cos(n * theta);
+    
+    v = set(vx, vy, vz) * vr + c;
+    
+    // By the the Escape Criterion for the Juliabulb, 
+    // we have that if the length of the vector is 
+    // larger than 2, then it is not in the Juliabulb.
+    if(length(v) > 2){
+        @density = 0;
+    }
+}
